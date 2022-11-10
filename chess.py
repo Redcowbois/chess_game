@@ -48,7 +48,7 @@ def initialize_game():
     """
     for row in range(8):
         for col in range(8):
-            if chess_board[row][col] != 0: 
+            if chess_board_model[row][col] != 0: 
                 current_piece = pygame.Surface((50, 50))
                 current_piece.fill((58,171,137))
                 window.blit(current_piece, (col*100, row*100))
@@ -97,7 +97,7 @@ while True:
     if test_piece_rect.collidepoint(mouse_pos):
         if pygame.mouse.get_pressed()[0]:
             test_piece_rect.update(mouse_pos[0]-25, mouse_pos[1]-25, 50, 50)
-            for i in pawn.valid_movement(chess_board):
+            for i in pawn.valid_movement(chess_board_model):
                 valid = pygame.Surface((50, 50))
                 valid_rect = valid.get_rect(center = (i[0]*100+50, i[1]*100+50))
                 valid.fill("Blue")
@@ -109,4 +109,4 @@ while True:
     window.blit(test_piece_dot, test_piece_dot_rect)
 
     pygame.display.update()
-    clock.tick(60)
+    clock.tick(144)

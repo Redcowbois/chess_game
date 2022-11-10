@@ -1,4 +1,5 @@
 pong_game.py
 test*
-.\__pycache__
+__pycache__/
 temp*
+unusedcode.py
