@@ -1,11 +1,29 @@
-chess_board_model = [[15,13,14,19,12,14,13,15],
+chess_board_model_0 = [[0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0]]
+
+chess_board_model_1 = [[15,13,14,19,12,14,13,15],
                     [11,11,11,11,11,11,11,11],
                     [0,0,0,0,0,0,0,0],
                     [0,0,0,0,0,0,0,0],
                     [0,0,0,0,0,0,0,0],
                     [0,0,0,0,0,0,0,0],
-                    [51,51,11,51,51,51,51,51],
+                    [51,51,51,51,51,51,51,51],
                     [55,53,54,59,52,54,53,55],]
+
+chess_board_model_2 = [[0,0,0,0,0,0,0,0],
+                        [0,0,0,11,0,0,0,0],
+                        [0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,51,0,0],
+                        [0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0],
+                        [51,11,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,11,0]]
 
 class Pawn():
     def __init__(self, team, number):
@@ -123,9 +141,10 @@ def setup_chess_board(board_template):
     return {"pawn": pawn_list, "rook": rook_list, "knight": knight_list, 
             "bishop": bishop_list, "queen": queen_list, "king": king_list}
 
-
-list_of_pieces = setup_chess_board(chess_board_model)
-print(game_board)
-
+if __name__ == "__main__":
+    list_of_pieces = setup_chess_board(chess_board_model_1)
+    for i in game_board:
+        print(i)
+    print(list_of_pieces)
 
 
