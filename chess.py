@@ -19,7 +19,7 @@ window.blit(chess_board_image, (0, 0))
 #Initial Game Pieces
 ###
 
-list_of_pieces = setup_chess_board(chess_board_model_1)
+list_of_pieces = setup_chess_board(chess_board_model_2)
 print(game_board)
 
 ###
@@ -29,7 +29,7 @@ print(game_board)
 #initialize_game()
 
 x = 0
-y = 1
+y = 0
 pressed = 0
 
 test_piece = pygame.image.load('textures/pawn.jpg')
@@ -41,6 +41,7 @@ test_piece_dot.fill("Red")
 
 pawn = Pawn(1, 1)
 print(pawn.id)
+
 
 while True:
     window.blit(chess_board_image, (0,0))
@@ -56,7 +57,7 @@ while True:
     if test_piece_rect.collidepoint(mouse_pos):
         if pygame.mouse.get_pressed()[0]:
             test_piece_rect.update(mouse_pos[0]-25, mouse_pos[1]-25, 50, 50)
-            for i in pawn.valid_movement(chess_board_model):
+            for i in pawn.valid_movement(game_board):
                 valid = pygame.Surface((50, 50))
                 valid_rect = valid.get_rect(center = (i[0]*100+50, i[1]*100+50))
                 valid.fill("Blue")
@@ -66,6 +67,60 @@ while True:
     
     window.blit(test_piece, test_piece_rect)
     window.blit(test_piece_dot, test_piece_dot_rect)
+
+    for i in range(8):
+        for j in range(8):
+            if game_board[j][i] == 0:
+                continue
+            current_piece = str(game_board[j][i].id)
+
+            if current_piece[6] == "1":
+                if current_piece[0] == "1":
+                    current_texture = pygame.image.load("textures/black_pawn.jpg")
+                    window.blit(current_texture, current_texture.get_rect(topleft = (i*100, j*100)))
+                elif current_piece[0] == "5":
+                    current_texture = pygame.image.load("textures/white_pawn.jpg")
+                    window.blit(current_texture, current_texture.get_rect(topleft = (i*100, j*100)))
+
+            elif current_piece[6] == "5":
+                if current_piece[0] == "1":
+                    current_texture = pygame.image.load("textures/black_rook.jpg")
+                    window.blit(current_texture, current_texture.get_rect(topleft = (i*100, j*100)))
+                elif current_piece[0] == "5":
+                    current_texture = pygame.image.load("textures/white_rook.jpg")
+                    window.blit(current_texture, current_texture.get_rect(topleft = (i*100, j*100)))
+
+            elif current_piece[6] == "3":
+                if current_piece[0] == "1":
+                    current_texture = pygame.image.load("textures/black_knight.jpg")
+                    window.blit(current_texture, current_texture.get_rect(topleft = (i*100, j*100)))
+                elif current_piece[0] == "5":
+                    current_texture = pygame.image.load("textures/white_knight.jpg")
+                    window.blit(current_texture, current_texture.get_rect(topleft = (i*100, j*100)))
+
+            elif current_piece[6] == "4":
+                if current_piece[0] == "1":
+                    current_texture = pygame.image.load("textures/black_bishop.jpg")
+                    window.blit(current_texture, current_texture.get_rect(topleft = (i*100, j*100)))
+                elif current_piece[0] == "5":
+                    current_texture = pygame.image.load("textures/white_bishop.jpg")
+                    window.blit(current_texture, current_texture.get_rect(topleft = (i*100, j*100)))
+
+            elif current_piece[6] == "9":
+                if current_piece[0] == "1":
+                    current_texture = pygame.image.load("textures/black_queen.jpg")
+                    window.blit(current_texture, current_texture.get_rect(topleft = (i*100, j*100)))
+                elif current_piece[0] == "5":
+                    current_texture = pygame.image.load("textures/white_queen.jpg")
+                    window.blit(current_texture, current_texture.get_rect(topleft = (i*100, j*100)))
+
+            elif current_piece[6] == "2":
+                if current_piece[0] == "1":
+                    current_texture = pygame.image.load("textures/black_king.jpg")
+                    window.blit(current_texture, current_texture.get_rect(topleft = (i*100, j*100)))
+                elif current_piece[0] == "5":
+                    current_texture = pygame.image.load("textures/white_king.jpg")
+                    window.blit(current_texture, current_texture.get_rect(topleft = (i*100, j*100)))
 
     pygame.display.update()
     clock.tick(144)

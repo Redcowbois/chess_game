@@ -16,12 +16,12 @@ chess_board_model_1 = [[15,13,14,19,12,14,13,15],
                     [51,51,51,51,51,51,51,51],
                     [55,53,54,59,52,54,53,55],]
 
-chess_board_model_2 = [[0,0,0,0,0,0,0,0],
-                        [0,0,0,11,0,0,0,0],
-                        [0,0,0,0,0,0,0,0],
+chess_board_model_2 = [[0,52,0,0,0,0,12,0],
+                        [11,0,0,11,0,0,0,0],
+                        [0,0,19,0,0,11,0,0],
                         [0,0,0,0,0,51,0,0],
-                        [0,0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0,0],
+                        [0,0,52,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,12],
                         [51,11,0,0,0,0,0,0],
                         [0,0,0,0,0,0,11,0]]
 
@@ -100,40 +100,34 @@ def setup_chess_board(board_template):
                 game_board[row][col] = 0
 
             elif str(piece)[1] == "1":
-                new_piece = Pawn(piece//10, pawn_number)
-                game_board[row][col] = new_piece.id
-                pawn_list.append(new_piece)
+                game_board[row][col] = Pawn(piece//10, pawn_number)
+                # pawn_list.append(new_piece)
                 pawn_number += 1
 
             
             elif str(piece)[1] == "5":
-                new_piece = Rook(piece//10, rook_number)
-                game_board[row][col] = new_piece.id
-                rook_list.append(new_piece)
+                game_board[row][col] = Rook(piece//10, rook_number)
+                # rook_list.append(new_piece)
                 rook_number += 1
 
             elif str(piece)[1] == "3":
-                new_piece = Knight(piece//10, knight_number)
-                game_board[row][col] = new_piece.id
-                knight_list.append(new_piece)
+                game_board[row][col] = Knight(piece//10, knight_number)
+                # knight_list.append(new_piece)
                 knight_number += 1
 
             elif str(piece)[1] == "4":
-                new_piece = Bishop(piece//10, bishop_number)
-                game_board[row][col] = new_piece.id
-                bishop_list.append(new_piece)
+                game_board[row][col] = Bishop(piece//10, bishop_number)
+                # bishop_list.append(new_piece)
                 bishop_number += 1
             
             elif str(piece)[1] == "9":
-                new_piece = Queen(piece//10, queen_number)
-                game_board[row][col] = new_piece.id
-                queen_list.append(new_piece)
+                game_board[row][col] = Queen(piece//10, queen_number)
+                # queen_list.append(new_piece)
                 queen_number += 1
             
             elif str(piece)[1] == "2":
-                new_piece = King(piece//10, king_number)
-                game_board[row][col] = new_piece.id
-                king_list.append(new_piece)
+                game_board[row][col] = King(piece//10, king_number)
+                # king_list.append(new_piece)
                 king_number += 1
 
             col += 1
@@ -143,8 +137,15 @@ def setup_chess_board(board_template):
 
 if __name__ == "__main__":
     list_of_pieces = setup_chess_board(chess_board_model_1)
-    for i in game_board:
-        print(i)
-    print(list_of_pieces)
+    for i in range(8):
+        row = []
+        for j in range(8):
+            if game_board[i][j] == 0: 
+                row.append(0)
+            else:
+                row.append(game_board[i][j].id)
+        print(row)
 
 
+
+dr = [1,-2, 4]
