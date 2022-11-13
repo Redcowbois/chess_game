@@ -135,17 +135,17 @@ def setup_chess_board(board_template):
     return {"pawn": pawn_list, "rook": rook_list, "knight": knight_list, 
             "bishop": bishop_list, "queen": queen_list, "king": king_list}
 
+def get_id_board(board):
+    id_board = []
+    for i in range(8):
+        id_board.append([])
+        for j in range(8):
+            if board[i][j] != 0:
+                id_board[i].append(board[i][j].id)
+            else: 
+                id_board[i].append(0)
+        print(id_board[i])
+
 if __name__ == "__main__":
     list_of_pieces = setup_chess_board(chess_board_model_1)
-    for i in range(8):
-        row = []
-        for j in range(8):
-            if game_board[i][j] == 0: 
-                row.append(0)
-            else:
-                row.append(game_board[i][j].id)
-        print(row)
-
-
-
-dr = [1,-2, 4]
+    get_id_board(game_board)
