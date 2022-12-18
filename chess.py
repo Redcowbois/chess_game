@@ -5,11 +5,11 @@
 import pygame
 from sys import exit 
 from chess_pieces import *
+from chess_board import *
 pygame.init()
 
 window = pygame.display.set_mode((800, 800))
 pygame.display.set_caption("Chess")
-
 clock = pygame.time.Clock()
 
 ###
@@ -41,8 +41,8 @@ while True:
 
     #Checks if a piece is released 
     if been_pressed and not pygame.mouse.get_pressed()[0]:
-        game_board[mouse_col][mouse_row] = hovered_piece
         game_board[original_position[1]][original_position[0]] = 0
+        game_board[mouse_col][mouse_row] = hovered_piece
         been_pressed = False
         first_press = True
         new_changes = True
@@ -104,7 +104,6 @@ while True:
                         current_texture = pygame.image.load("textures/white_king.jpg")
                         window.blit(current_texture, current_texture.get_rect(topleft = (i*100, j*100)))
         new_changes = False
-
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
