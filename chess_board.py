@@ -47,13 +47,14 @@ def setup_chess_board(board_template):
             # print(game_board[row])
             continue
 
-        col = 0
-        for piece in board_template[row]:
+        for col in range(8):
+            piece = board_template[row][col]
+
             if piece == 0:
                 game_board[row][col] = 0
 
             elif str(piece)[1] == "1":
-                game_board[row][col] = Pawn(piece//10, pawn_number)
+                game_board[row][col] = Pawn(piece//10, pawn_number, (row, col))
                 # pawn_list.append(new_piece)
                 pawn_number += 1
 
