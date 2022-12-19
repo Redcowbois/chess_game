@@ -28,12 +28,8 @@ new_changes = True
 been_pressed = False
 first_press = True
 
-valid_calculated = True
-check_piece = -1 
-new_changes_for_hover = False
-
 while True:
-    mouse_row, mouse_col = pygame.mouse.get_pos()[0]//100, pygame.mouse.get_pos()[1]//100 
+    mouse_row, mouse_col = pygame.mouse.get_pos()[0]//100, pygame.mouse.get_pos()[1]//100
     pressed = (True in pygame.mouse.get_pressed())
 
     #Checks if a piece is pressed 
@@ -61,17 +57,11 @@ while True:
     #---
 
     #Shows the valid piece movements
-    if pressed and type(game_board[mouse_col][mouse_row]) != int:
-        if check_piece != game_board[mouse_col][mouse_row]:
+    if pygame.event.get(pygame.MOUSEBUTTONDOWN) != []:
+        if game_board[mouse_col][mouse_row] != 0:
             check_piece = game_board[mouse_col][mouse_row]
-            valid_calculated = False
-
-        if new_changes_for_hover or not valid_calculated:
             check_piece.get_valid_movement(game_board)
-            print(check_piece)
-            valid_calculated = True 
-            new_changes_for_hover = False
-        elif valid_calculated:
+            
             for row, col in check_piece.valid_movement:
                 test = pygame.Surface((50, 50))
                 test.fill('Red')
@@ -137,11 +127,10 @@ while True:
         new_changes = False
     #---
 
-    #Exits the window
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            exit()
+    #Exits the window:
+    if pygame.event.get(eventtype=pygame.QUIT) != []:
+        pygame.quit()
+        exit()
     #---
 
     pygame.display.update()

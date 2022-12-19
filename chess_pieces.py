@@ -1,4 +1,8 @@
-class Pawn():
+class Piece():
+    def __init__(self):
+        self.id = "piece"
+
+class Pawn(Piece):
     def __init__(self, team, number, position):
         self.team = 1000000*team 
         self.number = 70000 + number*100
@@ -21,25 +25,38 @@ class Pawn():
     def get_valid_movement(self, board_matrix):
         self.valid_movement = []
         row, col = self.position
-        if self.id[0] == "1":
-            self.valid_movement += [(row + 1, col)]
-            if not self.moved:
+
+        if self.id[0] == "1": #Black
+            if board_matrix[row+1][col] == 0:
+                self.valid_movement += [(row + 1, col)]
+
+            if col + 1 <= 7 and isinstance(board_matrix[row+1][col+1], Piece)\
+            and board_matrix[row+1][col+1].id[0] == "5":
+                self.valid_movement += [(row + 1, col + 1)]
+            
+            if col - 1 >= 0 and isinstance(board_matrix[row+1][col-1], Piece)\
+            and board_matrix[row+1][col-1].id[0] == "5":
+                self.valid_movement += [(row + 1, col - 1)]
+
+            if not self.moved and board_matrix[row+1][col] == 0:
                 self.valid_movement += [(row + 2, col)]
 
-        elif self.id[0] == "5":
-            self.valid_movement += [(row - 1, col)]
-            if not self.moved:
+        elif self.id[0] == "5": #White
+            if board_matrix[row - 1][col] == 0:
+                self.valid_movement += [(row - 1, col)]
+            
+            if col + 1 <= 7 and isinstance(board_matrix[row-1][col+1], Piece)\
+            and board_matrix[row-1][col+1].id[0] == "1":
+                    self.valid_movement += [(row - 1, col + 1)]
+
+            if col - 1 >= 0 and isinstance(board_matrix[row-1][col-1], Piece)\
+            and board_matrix[row-1][col-1].id[0] == "1":
+                    self.valid_movement += [(row - 1, col - 1)]
+
+            if not self.moved and board_matrix[row-1][col] == 0:
                 self.valid_movement += [(row - 2, col)]
-
-
-        # for row in range(len(board_matrix)):
-        #     for col in range(len(board_matrix[row])):
-        #         if self.id == board_matrix[row][col]:
-        #             if str(self.id)[0] == "1":
-        #                 return row+1
-        #             if str(self.id)[0] == "5":
-        #                 return row-1
-class Rook(): 
+            
+class Rook(Piece): 
     def __init__(self, team, number):
         self.team = 1000000*team 
         self.number = 70000 + number*100
@@ -55,7 +72,12 @@ class Rook():
             
         return __str__ + "Rook" + str(self.id[-3])
     
-class Knight(): 
+    def get_valid_movement(self, board_matrix):
+        self.valid_movement = []
+        row, col = self.position
+        
+
+class Knight(Piece): 
     def __init__(self, team, number):
         self.team = 1000000*team 
         self.number = 70000 + number*100
@@ -71,7 +93,7 @@ class Knight():
             
         return __str__ + "Knight" + str(self.id[-3])
 
-class Bishop(): 
+class Bishop(Piece): 
     def __init__(self, team, number):
         self.team = 1000000*team 
         self.number = 70000 + number*100
@@ -86,7 +108,7 @@ class Bishop():
             __str__ += "Black "
             
         return __str__ + "Bishop" + str(self.id[-3])
-class Queen(): 
+class Queen(Piece): 
     def __init__(self, team, number):
         self.team = 1000000*team 
         self.number = 70000 + number*100
@@ -102,7 +124,7 @@ class Queen():
             
         return __str__ + "Queen" + str(self.id[-3])
 
-class King(): 
+class King(Piece): 
     def __init__(self, team, number):
         self.team = 1000000*team 
         self.number = 70000 + number*100
