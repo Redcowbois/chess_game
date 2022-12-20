@@ -43,17 +43,18 @@ while True:
     #Checks if a piece is released 
     if been_pressed and not pressed:
         
-        game_board[original_position[1]][original_position[0]] = 0
-        game_board[mouse_col][mouse_row] = hovered_piece
-        hovered_piece.position = (mouse_col, mouse_row)
+        if (mouse_col, mouse_row) in hovered_piece.valid_movement:
+            game_board[original_position[1]][original_position[0]] = 0
+            game_board[mouse_col][mouse_row] = hovered_piece
+            hovered_piece.position = (mouse_col, mouse_row)
 
-        if type(hovered_piece) == Pawn and original_position != (hovered_piece.position[1], hovered_piece.position[0]):
-            hovered_piece.moved = True
+            if type(hovered_piece) == Pawn:
+                hovered_piece.moved = True
+            
 
         been_pressed = False
         first_press = True
         new_changes = True
-        new_changes_for_hover = True
     #---
 
     #Shows the valid piece movements
@@ -63,9 +64,8 @@ while True:
             check_piece.get_valid_movement(game_board)
             
             for row, col in check_piece.valid_movement:
-                test = pygame.Surface((50, 50))
-                test.fill('Red')
-                window.blit(test, test.get_rect(topleft = (col*100+25, row*100 + 25)))
+                allowed_tiles = pygame.image.load("textures/allowed.png")
+                window.blit(allowed_tiles, allowed_tiles.get_rect(topleft = (col*100, row*100)))
     #---
 
     #Generates the board again if there are new changes 
@@ -124,6 +124,10 @@ while True:
                     elif current_piece[0] == "5":
                         current_texture = pygame.image.load("textures/white_king.jpg")
                         window.blit(current_texture, current_texture.get_rect(topleft = (i*100+25, j*100+25)))
+                
+                elif current_piece[6] == "6": #TestPiece
+                    current_texture = pygame.image.load("textures/white_pawn.jpg")
+                    window.blit(current_texture, current_texture.get_rect(topleft = (i*100+25, j*100+25)))
         new_changes = False
     #---
 

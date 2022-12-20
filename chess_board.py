@@ -12,7 +12,7 @@ chess_board_model_0 = [[0,0,0,0,0,0,0,0],
 chess_board_model_1 = [[15,13,14,19,12,14,13,15],
                     [11,11,11,11,11,11,11,11],
                     [0,0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,16,0,0,0],
                     [0,0,0,0,0,0,0,0],
                     [0,0,0,0,0,0,0,0],
                     [51,51,51,51,51,51,51,51],
@@ -60,29 +60,32 @@ def setup_chess_board(board_template):
 
             
             elif str(piece)[1] == "5":
-                game_board[row][col] = Rook(piece//10, rook_number)
+                game_board[row][col] = Rook(piece//10, rook_number, (row, col))
                 # rook_list.append(new_piece)
                 rook_number += 1
 
             elif str(piece)[1] == "3":
-                game_board[row][col] = Knight(piece//10, knight_number)
+                game_board[row][col] = Knight(piece//10, knight_number, (row, col))
                 # knight_list.append(new_piece)
                 knight_number += 1
 
             elif str(piece)[1] == "4":
-                game_board[row][col] = Bishop(piece//10, bishop_number)
+                game_board[row][col] = Bishop(piece//10, bishop_number, (row, col))
                 # bishop_list.append(new_piece)
                 bishop_number += 1
             
             elif str(piece)[1] == "9":
-                game_board[row][col] = Queen(piece//10, queen_number)
+                game_board[row][col] = Queen(piece//10, queen_number, (row, col))
                 # queen_list.append(new_piece)
                 queen_number += 1
             
             elif str(piece)[1] == "2":
-                game_board[row][col] = King(piece//10, king_number)
+                game_board[row][col] = King(piece//10, king_number, (row, col))
                 # king_list.append(new_piece)
                 king_number += 1
+            
+            elif str(piece)[1] == "6":
+                game_board[row][col] = Test(piece//10, king_number, (row, col))
 
             col += 1
         # print(game_board[row])
