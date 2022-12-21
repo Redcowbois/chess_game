@@ -60,7 +60,7 @@ while True:
     if click_event != [] and click_event[0].button == 1:
         if game_board[mouse_col][mouse_row] != 0:
             check_piece = game_board[mouse_col][mouse_row]
-            check_piece.get_valid_movement(game_board)
+            check_piece.get_valid_movement(game_board, type(check_piece).__name__)
             
             for row, col in check_piece.valid_movement:
                 allowed_tiles = pygame.image.load("textures/allowed.png")
