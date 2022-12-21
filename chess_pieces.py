@@ -134,6 +134,23 @@ class Knight(Piece):
             
         return __str__ + "Knight" + str(self.id[-3])
 
+    def get_valid_movement(self, board_matrix):
+        self.valid_movement = []
+        row, col = self.position
+        check_direction = [(-2, 1), (-2, -1), (2, 1), (2, -1), (1, -2), (-1, -2), (1, 2), (-1, 2)]
+
+        for i, j in check_direction:
+            row, col = self.position
+            if row + i >= 0 and row + i <= 7 and col + j >= 0 and col + j <= 7:
+                row += i
+                col += j
+                next_piece = board_matrix[row][col]
+                
+                if next_piece == 0:
+                    self.valid_movement += [(row, col)]
+                elif next_piece.id[0] != self.id[0]:
+                    self.valid_movement += [(row, col)]
+
 class Bishop(Piece): 
     def __init__(self, team, number, position):
         self.team = 1000000*team 
@@ -150,6 +167,29 @@ class Bishop(Piece):
             __str__ += "Black "
             
         return __str__ + "Bishop" + str(self.id[-3])
+    
+
+    def get_valid_movement(self, board_matrix):
+        self.valid_movement = []
+        row, col = self.position
+        check_direction = [(1, 1), (1, -1), (-1, 1), (-1, -1)]
+
+        for i, j in check_direction:
+            row, col = self.position
+            while row + i >= 0 and row + i <= 7 and col + j >= 0 and col + j <= 7:
+                row += i
+                col += j
+                next_piece = board_matrix[row][col]
+
+                if next_piece == 0:
+                    self.valid_movement += [(row, col)]
+                elif next_piece.id[0] != self.id[0]:
+                    self.valid_movement += [(row, col)]
+                    break
+                elif next_piece.id[0] == self.id[0]:
+                    break
+
+        
 class Queen(Piece): 
     def __init__(self, team, number, position):
         self.team = 1000000*team 
@@ -166,6 +206,26 @@ class Queen(Piece):
             __str__ += "Black "
             
         return __str__ + "Queen" + str(self.id[-3])
+
+    def get_valid_movement(self, board_matrix):
+        self.valid_movement = []
+        row, col = self.position
+        check_direction = [(1, 1), (1, -1), (-1, 1), (-1, -1), (1, 0), (0, 1), (-1, 0), (0, -1)]
+
+        for i, j in check_direction:
+            row, col = self.position
+            while row + i >= 0 and row + i <= 7 and col + j >= 0 and col + j <= 7:
+                row += i
+                col += j
+                next_piece = board_matrix[row][col]
+                
+                if next_piece == 0:
+                    self.valid_movement += [(row, col)]
+                elif next_piece.id[0] != self.id[0]:
+                    self.valid_movement += [(row, col)]
+                    break
+                elif next_piece.id[0] == self.id[0]:
+                    break
 
 class King(Piece): 
     def __init__(self, team, number, position):
@@ -186,6 +246,23 @@ class King(Piece):
             __str__ += "Black "
             
         return __str__ + "King" + str(self.id[-3])
+    
+    def get_valid_movement(self, board_matrix):
+        self.valid_movement = []
+        row, col = self.position
+        check_direction = [(1, 1), (1, -1), (-1, 1), (-1, -1), (1, 0), (0, 1), (-1, 0), (0, -1)]
+
+        for i, j in check_direction:
+            row, col = self.position
+            if row + i >= 0 and row + i <= 7 and col + j >= 0 and col + j <= 7:
+                row += i
+                col += j
+                next_piece = board_matrix[row][col]
+                
+                if next_piece == 0:
+                    self.valid_movement += [(row, col)]
+                elif next_piece.id[0] != self.id[0]:
+                    self.valid_movement += [(row, col)]
 
 class Test(Piece):
     def __init__(self, team, number, position):
