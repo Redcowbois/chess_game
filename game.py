@@ -5,7 +5,7 @@
 import pygame
 from sys import exit 
 from chess_pieces import *
-from chess_board import *
+from chess_board import Chess_Board
 pygame.init()
 
 window = pygame.display.set_mode((800, 800))
@@ -16,7 +16,7 @@ clock = pygame.time.Clock()
 #Initial Game State
 ###
 chess_board_image = pygame.image.load('textures/board.png')
-game_board = setup_chess_board(chess_board_model_1)
+game_board = Chess_Board.setup_chess_board(Chess_Board.chess_board_model_1)
 
 
 ###
@@ -29,7 +29,7 @@ first_press = True
 
 while True:
     mouse_row, mouse_col = pygame.mouse.get_pos()[0]//100, pygame.mouse.get_pos()[1]//100
-    pressed = (True in pygame.mouse.get_pressed())
+    pressed = pygame.mouse.get_pressed()[0]
 
     #Checks if a piece is pressed 
     if pressed and first_press and game_board[mouse_col][mouse_row] != 0:
@@ -49,7 +49,6 @@ while True:
 
             if type(hovered_piece) == Pawn:
                 hovered_piece.moved = True
-            
 
         been_pressed = False
         first_press = True
@@ -57,7 +56,8 @@ while True:
     #---
 
     #Shows the valid piece movements
-    if pygame.event.get(pygame.MOUSEBUTTONDOWN) != []:
+    click_event = pygame.event.get(pygame.MOUSEBUTTONDOWN)
+    if click_event != [] and click_event[0].button == 1:
         if game_board[mouse_col][mouse_row] != 0:
             check_piece = game_board[mouse_col][mouse_row]
             check_piece.get_valid_movement(game_board)
@@ -126,5 +126,6 @@ while True:
         exit()
     #---
 
+    pygame.event.pump()
     pygame.display.update()
     clock.tick(60)
