@@ -3,3 +3,4 @@ test*
 __pycache__/
 temp*
 unusedcode.py
+TODO.txt

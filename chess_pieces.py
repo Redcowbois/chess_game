@@ -55,36 +55,37 @@ class Pawn(Piece):
     def __init__(self, team, number, position):
         super().__init__(team, number, 1, position)
         self.moved = False
+        self.white_side = None
     
     def get_valid_movement(self, board_matrix, PLACEHOLDER):
         self.valid_movement = []
         row, col = self.position
 
-        if self.id[0] == "1": #Black
+        if not self.white_side: #Black side
             if row+1 <= 7 and board_matrix[row+1][col] == 0:
                 self.valid_movement += [(row + 1, col)]
 
             if col + 1 <= 7 and row+1 <= 7 and isinstance(board_matrix[row+1][col+1], Piece)\
-            and board_matrix[row+1][col+1].id[0] == "5":
+            and board_matrix[row+1][col+1].id[0] != self.id[0]:
                 self.valid_movement += [(row + 1, col + 1)]
             
             if col - 1 >= 0 and row+1 <= 7 and isinstance(board_matrix[row+1][col-1], Piece)\
-            and board_matrix[row+1][col-1].id[0] == "5":
+            and board_matrix[row+1][col-1].id[0] != self.id[0]:
                 self.valid_movement += [(row + 1, col - 1)]
 
             if not self.moved and board_matrix[row+1][col] == 0:
                 self.valid_movement += [(row + 2, col)]
 
-        elif self.id[0] == "5": #White
+        elif self.white_side: #White side
             if row - 1 >= 0 and board_matrix[row - 1][col] == 0:
                 self.valid_movement += [(row - 1, col)]
             
             if col + 1 <= 7 and row - 1 >= 0 and isinstance(board_matrix[row-1][col+1], Piece)\
-            and board_matrix[row-1][col+1].id[0] == "1":
+            and board_matrix[row-1][col+1].id[0] != self.id[0]:
                     self.valid_movement += [(row - 1, col + 1)]
 
             if col - 1 >= 0 and row - 1 >= 0 and isinstance(board_matrix[row-1][col-1], Piece)\
-            and board_matrix[row-1][col-1].id[0] == "1":
+            and board_matrix[row-1][col-1].id[0] != self.id[0]:
                     self.valid_movement += [(row - 1, col - 1)]
 
             if not self.moved and board_matrix[row-1][col] == 0:
@@ -93,6 +94,7 @@ class Pawn(Piece):
 class Rook(Piece): 
     def __init__(self, team, number, position):
         super().__init__(team, number, 5, position)
+        self.moved = False
         
 class Knight(Piece): 
     def __init__(self, team, number, position):
@@ -109,7 +111,7 @@ class Queen(Piece):
 class King(Piece): 
     def __init__(self, team, number, position):
         super().__init__(team, number, 2, position)
-        self.checked = False
+        self.checked = True
         self.moved = False
     
 class Test(Piece):
