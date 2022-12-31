@@ -111,8 +111,21 @@ class Queen(Piece):
 class King(Piece): 
     def __init__(self, team, number, position):
         super().__init__(team, number, 2, position)
-        self.checked = True
+        self.checked = False
         self.moved = False
+    
+    def get_valid_movement(self, board_matrix, piece_type, movement_board):
+        super().get_valid_movement(board_matrix, piece_type)
+        new_movement = []
+        print(self.valid_movement)
+        for row, col in self.valid_movement:
+            print(row, col, end= " ")
+            print(movement_board[row][col])
+            if movement_board[row][col] == 0:
+                new_movement.append((row, col))
+        self.valid_movement = new_movement
+
+                
     
 class Test(Piece):
     def __init__(self, team, number, position):

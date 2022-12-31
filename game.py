@@ -1,3 +1,5 @@
+from dev_settings import *
+
 ###
 #Setup
 ###
@@ -16,20 +18,39 @@ clock = pygame.time.Clock()
 ###
 #Initial Game State
 ###
-class Player():
+class Player(): #Class for players
     def __init__(self, team):
         self.team = team
         self.moves = []
 
-if random() < 0.5:
+class Move(): #Class to keep track of past moves
+    def __init__(self, before, after, checked): 
+        self.before = before
+        self.after = after
+        self.checked = checked
+###########TESTING########
+if white_side: #Original Board
     player = Player("5")
-    game_board = Chess_Board.setup_chess_board(Chess_Board.chess_board_model_1)
-    turn = 0
-else: 
-    player = Player("1")
-    game_board = Chess_Board.setup_chess_board(Chess_Board.invert_board(Chess_Board.chess_board_model_1))
-    turn = 1
+    enemy = Player("1")
+    game_board = Chess_Board.setup_chess_board(BOARD) 
 
+elif black_side:  #Inverted Board
+    player = Player("1")
+    enemy = Player("5")
+    game_board = Chess_Board.setup_chess_board(Chess_Board.invert_board(BOARD))
+###############
+else: 
+    if random() < 0.5: #Original Board
+        player = Player("5")
+        enemy = Player("1")
+        game_board = Chess_Board.setup_chess_board(BOARD) 
+
+    else:  #Inverted Board
+        player = Player("1")
+        enemy = Player("5")
+        game_board = Chess_Board.setup_chess_board(Chess_Board.invert_board(BOARD))
+
+turn = 0
 chess_board_image = pygame.image.load('textures/board.png')
 
 ###
@@ -74,7 +95,7 @@ while True:
         original_position = (mouse_row, mouse_col)
         hovered_piece = game_board[mouse_col][mouse_row]
 
-        if team_turn == hovered_piece.id[0]:
+        if team_turn == hovered_piece.id[0] or not has_turns:
             first_press = False
             been_pressed = True
     #---
@@ -90,8 +111,6 @@ while True:
             if type(hovered_piece) in [Pawn, Rook, King]:
                 hovered_piece.moved = True
 
-        print(original_position[1], original_position[0], mouse_col, mouse_row)
-
         if (original_position[1], original_position[0]) != (mouse_col, mouse_row):
             turn += 1
 
@@ -106,16 +125,16 @@ while True:
     if click_event != [] and click_event[0].button == 1 and game_board[mouse_col][mouse_row] != 0:
 
         check_piece = game_board[mouse_col][mouse_row]
-        check_piece.get_valid_movement(game_board, type(check_piece).__name__)
+        # check_piece.get_valid_movement(game_board, type(check_piece).__name__)
         #TEST#############################
-        # print("white")
-        # for a in white_movement_board:
-        #     print(a)
-        # print("black")
-        # for b in black_movement_board:
-        #     print(b)
-
-        if team_turn == check_piece.id[0]:
+        print("white")
+        for a in white_movement_board:
+            print(a)
+        print("black")
+        for b in black_movement_board:
+            print(b)
+        ################
+        if team_turn == check_piece.id[0] or not has_turns:
             for row, col in check_piece.valid_movement:
                 allowed_tiles = pygame.image.load("textures/allowed.png")
                 window.blit(allowed_tiles, allowed_tiles.get_rect(topleft = (col*100, row*100)))
@@ -146,25 +165,35 @@ while True:
                         [0,0,0,0,0,0,0,0],
                         [0,0,0,0,0,0,0,0],
                         [0,0,0,0,0,0,0,0]]
+
         for i in range(8):
             for j in range(8):
+                    
                 if game_board[j][i] == 0:
                     continue
                 current_piece = game_board[j][i]
 
                 #Updating the valid movements
-                current_piece.get_valid_movement(game_board, type(current_piece).__name__)
+                
+                if type(current_piece) != King:
+                    current_piece.get_valid_movement(game_board, type(current_piece).__name__)
 
-                for row, col in current_piece.valid_movement:
+                for row, col in current_piece.valid_movement: #Drawing movement board 
                     if str(current_piece.id)[0] == "1":
                         black_movement_board[row][col] += 1
                     elif str(current_piece.id[0]) == "5":
                         white_movement_board[row][col] += 1
+                
+                if type(current_piece) == King and current_piece.id[0] == "5":
+                    current_piece.get_valid_movement(game_board, "King", black_movement_board)
+                elif type(current_piece) == King and current_piece.id[0] == "1":
+                    current_piece.get_valid_movement(game_board, "King", white_movement_board)
+            
                 #---
 
                 #Checking for checks
 
-                #Drawing the board
+                #Loading Piece Textures/Redrawing the board
                 if current_piece.id[6] == "1": #Pawn
                     if current_piece.id[0] == "1":
                         current_texture = pygame.image.load("textures/black_pawn.jpg")
