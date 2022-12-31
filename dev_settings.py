@@ -16,5 +16,9 @@ has_turns = False
 white_side = True
 black_side = False
 
-white_king_pos = (0,0)
-black_king_pos = (0,0)
+white_king_pos = -1
+black_king_pos = -1
+
+def print_board(board):
+    for row in board:
+        print(row)

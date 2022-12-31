@@ -185,15 +185,27 @@ while True:
                         white_movement_board[row][col] += 1
                 
                 if type(current_piece) == King and current_piece.id[0] == "5":
-                    current_piece.get_valid_movement(game_board, "King", black_movement_board)
+                    white_king_pos = (j, i)
                 elif type(current_piece) == King and current_piece.id[0] == "1":
-                    current_piece.get_valid_movement(game_board, "King", white_movement_board)
+                    black_king_pos = (j, i)
             
                 #---
 
                 #Checking for checks
 
-                #Loading Piece Textures/Redrawing the board
+        if white_king_pos != -1:
+            game_board[white_king_pos[0]][white_king_pos[1]].get_valid_movement(game_board, "King", black_movement_board)
+        if black_king_pos != -1:      
+            game_board[black_king_pos[0]][black_king_pos[1]].get_valid_movement(game_board, "King", white_movement_board)
+        
+        #Loading Piece Textures/Redrawing the board
+        for i in range(8):
+            for j in range(8):
+                    
+                if game_board[j][i] == 0:
+                    continue
+                current_piece = game_board[j][i]
+
                 if current_piece.id[6] == "1": #Pawn
                     if current_piece.id[0] == "1":
                         current_texture = pygame.image.load("textures/black_pawn.jpg")
