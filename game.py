@@ -127,12 +127,13 @@ while True:
         check_piece = game_board[mouse_col][mouse_row]
         # check_piece.get_valid_movement(game_board, type(check_piece).__name__)
         #TEST#############################
-        print("white")
-        for a in white_movement_board:
-            print(a)
-        print("black")
-        for b in black_movement_board:
-            print(b)
+        print("white board")
+        print_board(white_movement_board)
+        print("black board")
+        print_board(black_movement_board)
+        print("---------")
+        print(check_piece.__str__(), "movement", check_piece.valid_movement)
+        print(check_piece.__str__(), "attack", check_piece.valid_attack)
         ################
         if team_turn == check_piece.id[0] or not has_turns:
             for row, col in check_piece.valid_movement:
@@ -178,7 +179,7 @@ while True:
                 if type(current_piece) != King:
                     current_piece.get_valid_movement(game_board, type(current_piece).__name__)
 
-                for row, col in current_piece.valid_movement: #Drawing movement board 
+                for row, col in current_piece.valid_attack: #Drawing movement board 
                     if str(current_piece.id)[0] == "1":
                         black_movement_board[row][col] += 1
                     elif str(current_piece.id[0]) == "5":
@@ -186,7 +187,7 @@ while True:
                 
                 if type(current_piece) == King and current_piece.id[0] == "5":
                     white_king_pos = (j, i)
-                elif type(current_piece) == King and current_piece.id[0] == "1":
+                if type(current_piece) == King and current_piece.id[0] == "1":
                     black_king_pos = (j, i)
             
                 #---

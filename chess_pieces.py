@@ -7,6 +7,7 @@ class Piece():
 
         self.position = position
         self.valid_movement = []
+        self.valid_attack = []
     
     #What to print 
     def __str__(self):
@@ -29,6 +30,7 @@ class Piece():
                         "Queen": [(1, 1), (1, -1), (-1, 1), (-1, -1), (1, 0), (0, 1), (-1, 0), (0, -1)],
                         "King": [(1, 1), (1, -1), (-1, 1), (-1, -1), (1, 0), (0, 1), (-1, 0), (0, -1)]}
         self.valid_movement = []
+        self.valid_attack = []
         row, col = self.position
         check_direction = direction_dict[piece_type]
 
@@ -41,51 +43,69 @@ class Piece():
                 col += j
                 next_piece = board_matrix[row][col]
 
-                if next_piece == 0: #Is next tile empty
+                if next_piece == 0: #Is next tile empty?
                     self.valid_movement += [(row, col)]
+                    self.valid_attack += [(row, col)]
                     if piece_type == "Knight" or piece_type == "King":
                         running = False
-                elif next_piece.id[0] != self.id[0]: #Is next tile an enemy piece
-                    self.valid_movement += [(row, col)]
+                        
+                elif next_piece.id[0] != self.id[0]: #Is next tile an enemy piece?
+                    if type(next_piece) != King:
+                        self.valid_movement += [(row, col)]
+                    self.valid_attack += [(row, col)]
+                    self.valid_attack += [(row + i, col + j)] #The tile right after the enemy piece
                     running = False
-                elif next_piece.id[0] == self.id[0]: #Is next tile an ally piece
+
+                elif next_piece.id[0] == self.id[0]: #Is next tile an ally piece?
                     running = False
 
 class Pawn(Piece):
     def __init__(self, team, number, position):
         super().__init__(team, number, 1, position)
         self.moved = False
-        self.white_side = None
     
     def get_valid_movement(self, board_matrix, PLACEHOLDER):
         self.valid_movement = []
+        self.valid_attack = []
         row, col = self.position
 
-        if not self.white_side: #Black side
+        if self.id[0] == "1": #Black side
             if row+1 <= 7 and board_matrix[row+1][col] == 0:
                 self.valid_movement += [(row + 1, col)]
 
-            if col + 1 <= 7 and row+1 <= 7 and isinstance(board_matrix[row+1][col+1], Piece)\
-            and board_matrix[row+1][col+1].id[0] != self.id[0]:
-                self.valid_movement += [(row + 1, col + 1)]
+            if col + 1 <= 7 and row+1 <= 7:
+                self.valid_attack += [(row + 1, col + 1)]
+
+                if isinstance(board_matrix[row+1][col+1], Piece) and board_matrix[row+1][col+1].id[0] != self.id[0]\
+                and type(board_matrix[row+1][col+1]) != King:
+                    self.valid_movement += [(row + 1, col + 1)]
             
-            if col - 1 >= 0 and row+1 <= 7 and isinstance(board_matrix[row+1][col-1], Piece)\
-            and board_matrix[row+1][col-1].id[0] != self.id[0]:
-                self.valid_movement += [(row + 1, col - 1)]
+            if col - 1 >= 0 and row+1 <= 7:
+                self.valid_attack += [(row + 1, col - 1)]
+            
+                if isinstance(board_matrix[row+1][col-1], Piece) and board_matrix[row+1][col-1].id[0] != self.id[0]\
+                and type(board_matrix[row+1][col+1]) != King:
+                    self.valid_movement += [(row + 1, col - 1)]
 
             if not self.moved and board_matrix[row+1][col] == 0:
                 self.valid_movement += [(row + 2, col)]
 
-        elif self.white_side: #White side
+        elif self.id[0] == "5": #White side
             if row - 1 >= 0 and board_matrix[row - 1][col] == 0:
                 self.valid_movement += [(row - 1, col)]
             
-            if col + 1 <= 7 and row - 1 >= 0 and isinstance(board_matrix[row-1][col+1], Piece)\
-            and board_matrix[row-1][col+1].id[0] != self.id[0]:
+            if col + 1 <= 7 and row - 1 >= 0: 
+                self.valid_attack += [(row - 1, col + 1)]
+
+                if isinstance(board_matrix[row-1][col+1], Piece) and board_matrix[row-1][col+1].id[0] != self.id[0]\
+                and type(board_matrix[row+1][col+1]) != King:
                     self.valid_movement += [(row - 1, col + 1)]
 
-            if col - 1 >= 0 and row - 1 >= 0 and isinstance(board_matrix[row-1][col-1], Piece)\
-            and board_matrix[row-1][col-1].id[0] != self.id[0]:
+            if col - 1 >= 0 and row - 1 >= 0: 
+                self.valid_attack += [(row - 1, col - 1)]
+                
+                if isinstance(board_matrix[row-1][col-1], Piece) and board_matrix[row-1][col-1].id[0] != self.id[0]\
+                and type(board_matrix[row+1][col+1]) != King:
                     self.valid_movement += [(row - 1, col - 1)]
 
             if not self.moved and board_matrix[row-1][col] == 0:
@@ -117,10 +137,7 @@ class King(Piece):
     def get_valid_movement(self, board_matrix, piece_type, movement_board):
         super().get_valid_movement(board_matrix, piece_type)
         new_movement = []
-        print(self.valid_movement)
         for row, col in self.valid_movement:
-            print(row, col, end= " ")
-            print(movement_board[row][col])
             if movement_board[row][col] == 0:
                 new_movement.append((row, col))
         self.valid_movement = new_movement
