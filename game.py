@@ -23,11 +23,6 @@ class Player(): #Class for players
         self.team = team
         self.moves = []
 
-class Move(): #Class to keep track of past moves
-    def __init__(self, before, after, checked): 
-        self.before = before
-        self.after = after
-        self.checked = checked
 ###########TESTING########
 if white_side: #Original Board
     player = Player("5")
@@ -52,6 +47,34 @@ else:
 
 turn = 0
 chess_board_image = pygame.image.load('textures/board.png')
+
+class Move(): #Class to keep track of past moves
+    def __init__(self, before, after, piece_type, captured_piece): 
+        self.before = before
+        self.after = after
+        self.type = piece_type
+        self.captured = captured_piece
+    
+    def __str__(self):
+        col_dict = {0: "A", 1: "B", 2: "C", 3: "D", 4: "E", 5: "F", 6: "G", 7: "H"}
+        start_coords = str(col_dict[self.before[1]]) + str(8-self.before[0])
+        end_coords = str(col_dict[self.after[1]]) + str(8-self.after[0])
+        if self.captured == 0:
+            captured = "nothing"
+        else: 
+            captured = type(self.captured).__name__
+
+        return "Moved " + type(self.type).__name__ + start_coords + "->" + end_coords +", took " + captured
+
+    def undo_move(board, history): #Undos last move
+        if history != []:
+            move = history[-1]
+            board[move.before[0]][move.before[1]] = move.type
+            board[move.after[0]][move.after[1]] = move.captured
+            history.pop(-1)
+
+move_history = []
+
 
 ###
 #Game Loop
@@ -105,15 +128,22 @@ while True:
         
         if (mouse_col, mouse_row) in hovered_piece.valid_movement:
             game_board[original_position[1]][original_position[0]] = 0
+            taken_piece = game_board[mouse_col][mouse_row]
             game_board[mouse_col][mouse_row] = hovered_piece
             hovered_piece.position = (mouse_col, mouse_row)
 
             if type(hovered_piece) in [Pawn, Rook, King]:
                 hovered_piece.moved = True
 
-        if (original_position[1], original_position[0]) != (mouse_col, mouse_row):
+        if (original_position[1], original_position[0]) != (mouse_col, mouse_row) and (mouse_col, mouse_row) in hovered_piece.valid_movement:
             turn += 1
+            move_history.append(Move((original_position[1], original_position[0]), (mouse_col, mouse_row), hovered_piece, taken_piece))
+        ###########
+        # print("move history", move_history)
 
+        # for i in move_history:
+        #     print(i.__str__())
+        ########
         been_pressed = False
         first_press = True
         new_changes = True
@@ -125,16 +155,24 @@ while True:
     if click_event != [] and click_event[0].button == 1 and game_board[mouse_col][mouse_row] != 0:
 
         check_piece = game_board[mouse_col][mouse_row]
-        # check_piece.get_valid_movement(game_board, type(check_piece).__name__)
+
         #TEST#############################
-        print("white board")
-        print_board(white_movement_board)
+        # print("white board")
+        # print_board(white_movement_board)
         print("black board")
         print_board(black_movement_board)
         print("---------")
         print(check_piece.__str__(), "movement", check_piece.valid_movement)
         print(check_piece.__str__(), "attack", check_piece.valid_attack)
+
+        if type(check_piece) == Test:
+            for i in move_history:
+                print(i.__str__())
+        
+        if type(check_piece) == Test2:
+            Move.undo_move(game_board, move_history)
         ################
+
         if team_turn == check_piece.id[0] or not has_turns:
             for row, col in check_piece.valid_movement:
                 allowed_tiles = pygame.image.load("textures/allowed.png")
@@ -179,7 +217,7 @@ while True:
                 if type(current_piece) != King:
                     current_piece.get_valid_movement(game_board, type(current_piece).__name__)
 
-                for row, col in current_piece.valid_attack: #Drawing movement board 
+                for row, col in current_piece.valid_attack: #Drawing movement board
                     if str(current_piece.id)[0] == "1":
                         black_movement_board[row][col] += 1
                     elif str(current_piece.id[0]) == "5":

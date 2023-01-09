@@ -105,6 +105,9 @@ class Chess_Board():
                 
                 elif str(piece)[1] == "6":
                     game_board[row][col] = Test(piece//10, king_number, (row, col))
+                
+                elif str(piece)[1] == "7":
+                    game_board[row][col] = Test2(piece//10, king_number, (row, col))
 
                 col += 1
         return game_board

@@ -12,7 +12,7 @@ class Piece():
     #What to print 
     def __str__(self):
         type_dict = {"1": "Pawn", "2": "King", "3": "Knight", 
-                    "4": "Bishop", "5": "Knight", "9": "Queen", "6": "Test"}
+                    "4": "Bishop", "5": "Knight", "9": "Queen", "6": "Test", "7": "Test2"}
         __str__ = ""
 
         if self.id[0] == "5":
@@ -53,7 +53,8 @@ class Piece():
                     if type(next_piece) != King:
                         self.valid_movement += [(row, col)]
                     self.valid_attack += [(row, col)]
-                    self.valid_attack += [(row + i, col + j)] #The tile right after the enemy piece
+                    if row+i<=7 and row+i>=0 and col+i<=7 and col+i>=0: #The tile right after the enemy piece
+                        self.valid_attack += [(row + i, col + j)] 
                     running = False
 
                 elif next_piece.id[0] == self.id[0]: #Is next tile an ally piece?
@@ -143,7 +144,6 @@ class King(Piece):
         self.valid_movement = new_movement
 
                 
-    
 class Test(Piece):
     def __init__(self, team, number, position):
         self.team = 1000000*team 
@@ -151,7 +151,23 @@ class Test(Piece):
         self.piece_type = 6
         self.id = str(self.team + self.number + self.piece_type)
         self.position = position
-        self.valid_movement = [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (1, 0), (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (2, 0), (2, 1), (2, 2), (2, 3), (2, 4), (2, 5), (2, 6), (2, 7), (3, 0), (3, 1), (3, 2), (3, 3), (3, 4), (3, 5), (3, 6), (3, 7), (4, 0), (4, 1), (4, 2), (4, 3), (4, 4), (4, 5), (4, 6), (4, 7), (5, 0), (5, 1), (5, 2), (5, 3), (5, 4), (5, 5), (5, 6), (5, 7), (6, 0), (6, 1), (6, 2), (6, 3), (6, 4), (6, 5), (6, 6), (6, 7), (7, 0), (7, 1), (7, 2), (7, 3), (7, 4), (7, 5), (7, 6), (7, 7)]
-    
+        # self.valid_movement = [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (1, 0), (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (2, 0), (2, 1), (2, 2), (2, 3), (2, 4), (2, 5), (2, 6), (2, 7), (3, 0), (3, 1), (3, 2), (3, 3), (3, 4), (3, 5), (3, 6), (3, 7), (4, 0), (4, 1), (4, 2), (4, 3), (4, 4), (4, 5), (4, 6), (4, 7), (5, 0), (5, 1), (5, 2), (5, 3), (5, 4), (5, 5), (5, 6), (5, 7), (6, 0), (6, 1), (6, 2), (6, 3), (6, 4), (6, 5), (6, 6), (6, 7), (7, 0), (7, 1), (7, 2), (7, 3), (7, 4), (7, 5), (7, 6), (7, 7)]
+        self.valid_movement = [(0, 0)]
+        self.valid_attack = self.valid_movement
+
+    def get_valid_movement(self, game_board, a):
+        return 0
+
+class Test2(Piece):
+    def __init__(self, team, number, position):
+        self.team = 1000000*team 
+        self.number = 70000 + number*100
+        self.piece_type = 7
+        self.id = str(self.team + self.number + self.piece_type)
+        self.position = position
+        # self.valid_movement = [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (1, 0), (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (2, 0), (2, 1), (2, 2), (2, 3), (2, 4), (2, 5), (2, 6), (2, 7), (3, 0), (3, 1), (3, 2), (3, 3), (3, 4), (3, 5), (3, 6), (3, 7), (4, 0), (4, 1), (4, 2), (4, 3), (4, 4), (4, 5), (4, 6), (4, 7), (5, 0), (5, 1), (5, 2), (5, 3), (5, 4), (5, 5), (5, 6), (5, 7), (6, 0), (6, 1), (6, 2), (6, 3), (6, 4), (6, 5), (6, 6), (6, 7), (7, 0), (7, 1), (7, 2), (7, 3), (7, 4), (7, 5), (7, 6), (7, 7)]
+        self.valid_movement = [(0, 0)]
+        self.valid_attack = self.valid_movement
+
     def get_valid_movement(self, game_board, a):
         return 0
